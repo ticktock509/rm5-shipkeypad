@@ -68,7 +68,14 @@ class OTAUpdater:
         self.latest_code = None
 
         # Overwrite the old code.
-#         os.rename('latest_code.py', self.filename)
+        #os.rename('latest_code.py', self.filename)
+    def update_and_noreset(self):
+        """ Update the code and reset the device."""
+
+        print(f"Updating device... (Renaming latest_code.py to {self.filename})", end="")
+
+        # Overwrite the old code.
+        os.rename('latest_code.py', self.filename)
 
     def update_and_reset(self):
         """ Update the code and reset the device."""
@@ -87,7 +94,7 @@ class OTAUpdater:
     
         print(f'Checking for latest version... on {self.version_url}')
         response = urequests.get(self.version_url)
-        
+        print(response.text)
         data = json.loads(response.text)
         
         print(f"data is: {data}, url is: {self.version_url}")
@@ -101,7 +108,16 @@ class OTAUpdater:
         # compare versions
         newer_version_available = True if int(self.current_version) < int(self.latest_version) else False
         
-        print(f'Newer version available: {newer_version_available}')    
+        print(f'Newer version available: {newer_version_available}')
+        # check for new
+        print(f"data version is: {data['new']}")
+        if newer_version_available == False:
+            if data['new'] == "none":
+                pass
+            else:
+                ota_updater2 = OTAUpdater(self.repo_url, data['new'], 0)
+                do_update = ota_updater2.download_and_update()
+                return do_update
         return newer_version_available
     
     def download_and_install_update_if_available(self):
@@ -110,5 +126,15 @@ class OTAUpdater:
             if self.fetch_latest_code():
                 self.update_no_reset() 
                 self.update_and_reset() 
+        else:
+            print('No new updates available.')
+
+    def download_and_update(self):
+        """ Check for updates, download and install them."""
+        if self.check_for_updates():
+            if self.fetch_latest_code():
+                self.update_no_reset()
+                self.update_and_noreset()
+                #self.update_and_reset() 
         else:
             print('No new updates available.')
