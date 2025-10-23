@@ -209,7 +209,8 @@ row_pins = [Pin(pin_name, mode=Pin.OUT) for pin_name in rows]
 col_pins = [Pin(pin_name, mode=Pin.IN, pull=Pin.PULL_DOWN) for pin_name in cols]
 pix.fill(red)
 pix.write()        
-
+display.write(str(version))
+display.post()
 ota_updater.download_and_install_update_if_available()
 
 
