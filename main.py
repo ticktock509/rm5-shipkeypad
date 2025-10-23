@@ -6,10 +6,11 @@ import utime as time
 import machine
 import json
 from ota import OTAUpdater
-version = 1
+version = 2
 firmware_url = "https://github.com/ticktock509/rm5-shipkeypad/"
 print('version', version)
 print('loading...')
+MQTTSERVER = "192.168.87.50"
 state = 'loading'
 last_state = 'off'
 localid = 'picow_kp3x4a'
@@ -150,7 +151,7 @@ def heartbeat(t):
     
 hbtimer = Timer(period=30000, mode=Timer.PERIODIC, callback=heartbeat)
 
-c = MQTTClient(localid, "192.168.87.90")
+c = MQTTClient(localid, MQTTSERVER)
 c.set_callback(sub_cb)
 
 try:
@@ -212,9 +213,6 @@ display.post()
 
 ota_updater = OTAUpdater(firmware_url, "main.py", version)
 ota_updater.download_and_install_update_if_available()
-ota_updater2 = OTAUpdater(firmware_url, "sample.py", version)
-ota_updater2.download_and_update()
-
 
 while not running:
     try:
