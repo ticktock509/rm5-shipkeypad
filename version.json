@@ -1,4 +1,5 @@
 {
   "version":1,
-  "new":"sample.py"
+  "new":"none"
 }
+#change none in new to file you wish to push to the device.
