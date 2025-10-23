@@ -7,7 +7,7 @@ import machine
 import json
 from ota import OTAUpdater
 version = 1
-firmware_url = "https://github.com/ticktock509/rm5-tagdecoder/"
+firmware_url = "https://github.com/ticktock509/rm5-shipkeypad/"
 print('version', version)
 ota_updater = OTAUpdater(firmware_url, "main.py", version)
 
