@@ -2,4 +2,4 @@
   "version":1,
   "new":"none"
 }
-#change none in new to file you wish to push to the device.
+{ "notes":"change none in new to file you wish to push to the device."}
