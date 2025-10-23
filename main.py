@@ -6,11 +6,9 @@ import utime as time
 import machine
 import json
 from ota import OTAUpdater
-version = 1
+version = 0
 firmware_url = "https://github.com/ticktock509/rm5-shipkeypad/"
 print('version', version)
-ota_updater = OTAUpdater(firmware_url, "main.py", version)
-
 print('loading...')
 state = 'loading'
 last_state = 'off'
@@ -211,9 +209,11 @@ pix.fill(red)
 pix.write()        
 display.write(str(version))
 display.post()
+
+ota_updater = OTAUpdater(firmware_url, "main.py", version)
 ota_updater.download_and_install_update_if_available()
-
-
+ota_updater = OTAUpdater(firmware_url, "sample.py", version)
+ota_updater.update_no_reset()
 while not running:
     try:
         c.check_msg()
